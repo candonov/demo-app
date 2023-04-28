@@ -30,7 +30,9 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - id: echoenv
-      run: echo ${{ github.event.head_commit.message }}
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo ${{ GITHUB_CONTEXT.event.head_commit.message }}
     
     - id: release
       uses: rymndhng/release-on-push-action@master
