@@ -26,13 +26,13 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - id: echo last commit
+    - name: echo last commit
       run: echo ${{ github.event.head_commit.message }}
       
-    - id: echo last PR message
+    - name: echo last PR message
       run: echo ${{ github.event.pull_request.comments }}
     
-    - id: echo last PR commits
+    - name: echo last PR commits
       run: echo ${{ github.event.pull_request.commits }}
 
     - id: release
