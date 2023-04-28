@@ -19,5 +19,4 @@ kubectl port-forward service/demo-app 8080:8080
 curl http://localhost:8080
 ```
 
-track github merge request details
-
+push test
