@@ -7,8 +7,6 @@ on:
   pull_request:
     types:
       - closed
-    paths:
-      - 'app/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
