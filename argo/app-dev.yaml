@@ -8,9 +8,9 @@ spec:
     namespace: dev
     server: 'https://kubernetes.default.svc'
   sources:
-    - repoURL: 'https://github.com/candonov/demo-app.git'
+    - repoURL: 'https://github.com/candonov/helm-charts.git'
       targetRevision: HEAD
-      path: chart/demo-app/
+      path: demo-app/
       helm:
         valueFiles:
           - $values/values-dev.yaml
