@@ -76,7 +76,7 @@ jobs:
       name: Find in merged commit messages
       uses: atlassian/gajira-find-issue-key@v3
       with:
-        string: ${{ github.event.pull_request.merge_commit_message }}
+        string: ${{ github.event.pull_request.merge_commit_title }}
 
     - name: Comment on issue main
       if: "contains(github.ref, 'main')"
