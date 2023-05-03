@@ -91,9 +91,15 @@ jobs:
     - name: Construct New Branch Name
       run: echo "BRANCH_NAME=${{ steps.find-issue-main.outputs.issue }}-auto-image-tag-update-${{ steps.release.outputs.tag_name }}" >> "$GITHUB_OUTPUT"
       id: branch-name
+      
+    - name: Check for changes
+      run: |
+        cat values-dev.yaml
+        git status
 
     - name: Stage updated values-dev.yaml
-      run: git add values-dev.yaml
+      run: git add .
+      
     - name: Commit changes
       run: git commit -m "${{ steps.find-issue-main.outputs.issue }} auto-updating values-dev.yaml with new build tag ${{ steps.release.outputs.tag_name }}"
 
