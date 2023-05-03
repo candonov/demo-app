@@ -1,4 +1,4 @@
-name: Do Something That Needs Scheduled
+name: Open PR from ArgoCD
 
 on:
   repository_dispatch:
@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
   
 jobs:
   build:
@@ -17,6 +18,9 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
+    - name: Update git user
+      run: git config --global user.name "argocd"
+    
     - name: checkout code
       uses: actions/checkout@v3
       with:
@@ -24,9 +28,29 @@ jobs:
         
     - uses: actions-ecosystem/action-get-latest-tag@v1
       id: get-latest-tag
-      with:
-        semver_only: true
  
     - name: Modify file
       run: |
-        echo ${{ steps.get-latest-tag.outputs.tag }}
+        # Use sed to replace the tag in the file with the ARTIFACT_NAME
+        sed -i "s/tag:.*/tag: ${{ steps.get-latest-tag.outputs.tag }}/g" values-prod.yaml
+        
+    - name: Construct New Branch Name
+      run: echo "BRANCH_NAME=${{ steps.get-latest-tag.outputs.tag }}-release-to-prod-auto-image-tag-update" >> "$GITHUB_OUTPUT"
+      id: branch-name
+      
+    - name: Check for changes
+      run: |
+        cat values-prod.yaml
+        git status
+    - name: Stage updated values-prod.yaml
+      run: git add .
+      
+    - name: Commit changes
+      run: git commit -m "Auto-updating values-prod.yaml with new build tag ${{ steps.release.outputs.tag_name }}"
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        branch: ${{ steps.branch-name.outputs.BRANCH_NAME }}
+        commit-message: "Auto-updating values-dev.yaml with new build tag ${{ steps.release.outputs.tag_name }} and merging (please add issue ID to merge commit message)"
+      id: cpr
