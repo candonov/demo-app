@@ -6,4 +6,4 @@ Simple hello world Go app uses net/http module, serving http on port 8080 and re
 Hello World!
 ```
 
-Written by candonov
+Written by candonov (forked)
