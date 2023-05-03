@@ -1,4 +1,9 @@
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'values-prod.yaml'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -7,8 +12,6 @@ permissions:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-#  if_merged:
-#    if: github.event.pull_request.merged == true
   builds:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -27,11 +30,18 @@ jobs:
       name: Find in commit messages
       uses: atlassian/gajira-find-issue-key@v3
       with:
-        string: ${{ github.ref }}
+        string: ${{ github.event.head_commit.message }}
         
     - name: Comment on issue
       uses: atlassian/gajira-comment@v3
       with:
-        issue: ${{ steps.find-issue.outputs.issue }}
-        comment: ${{ github.event.pusher.name }} test comment
+        issue: ${{ steps.find-issue-main.outputs.issue }}
+        comment: ${{ github.event.pusher.name }} deploy to prod
+        
+    - name: Transition issue to Done
+      id: transition
+      uses: atlassian/gajira-transition@v3
+      with:
+        issue: ${{ steps.find-issue-main.outputs.issue }}
+        transition: "Done"
 
