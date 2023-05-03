@@ -1,4 +1,4 @@
-name: Do Something That Needs Scheduled
+name: Open PR from ArgoCD
 
 on:
   repository_dispatch:
