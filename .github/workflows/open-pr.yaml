@@ -17,6 +17,9 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
+    - name: Update git user
+      run: git config --global user.name "${{ github.event.pusher.name }}"
+    
     - name: checkout code
       uses: actions/checkout@v3
       with:
