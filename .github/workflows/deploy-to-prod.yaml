@@ -37,13 +37,13 @@ jobs:
     - name: Comment on issue
       uses: atlassian/gajira-comment@v3
       with:
-        issue: ${{ steps.find-issue-main.outputs.issue }}
+        issue: ${{ steps.find-issue.outputs.issue }}
         comment: ${{ github.event.pusher.name }} deploy to prod
         
     - name: Transition issue to Done
       id: transition
       uses: atlassian/gajira-transition@v3
       with:
-        issue: ${{ steps.find-issue-main.outputs.issue }}
+        issue: ${{ steps.find-issue.outputs.issue }}
         transition: "Done"
 
