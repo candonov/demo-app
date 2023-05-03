@@ -4,9 +4,9 @@ name: CI/CD to test
 
 # Controls when the workflow will run
 on:
-  pull_request:
-    types:
-      - closed
+  push:
+    branches:
+      - main
     paths:
       - 'app/**'
 
@@ -76,10 +76,9 @@ jobs:
       name: Find in merged commit messages
       uses: atlassian/gajira-find-issue-key@v3
       with:
-        string: ${{ github.event.pull_request.merge_commit_title }}
+        string: ${{ github.event.head_commit.message }}
 
-    - name: Comment on issue main
-      if: "contains(github.ref, 'main')"
+    - name: Comment on issue
       uses: atlassian/gajira-comment@v3
       with:
         issue: ${{ steps.find-issue-main.outputs.issue }}
