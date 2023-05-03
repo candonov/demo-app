@@ -92,16 +92,16 @@ jobs:
       run: echo "BRANCH_NAME=${{ steps.find-issue-main.outputs.issue }}-auto-image-tag-update-${{ steps.release.outputs.tag_name }}" >> "$GITHUB_OUTPUT"
       id: branch-name
 
-    - name: Stage updated values-dev.yml
-      run: git add values-dev.yml
+    - name: Stage updated values-dev.yaml
+      run: git add values-dev.yaml
     - name: Commit changes
-      run: git commit -m "${{ steps.find-issue-main.outputs.issue }} auto-updating values-dev.yml with new build tag ${{ steps.release.outputs.tag_name }}"
+      run: git commit -m "${{ steps.find-issue-main.outputs.issue }} auto-updating values-dev.yaml with new build tag ${{ steps.release.outputs.tag_name }}"
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
       with:
         branch: ${{ steps.branch-name.outputs.BRANCH_NAME }}
-        commit-message: "${{ steps.find-issue-main.outputs.issue }} auto-updating values-dev.yml with new build tag ${{ steps.release.outputs.tag_name }} and merging"
+        commit-message: "${{ steps.find-issue-main.outputs.issue }} auto-updating values-dev.yaml with new build tag ${{ steps.release.outputs.tag_name }} and merging"
       id: cpr
 
     - name: Merge Pull Request
