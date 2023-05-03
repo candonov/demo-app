@@ -29,4 +29,26 @@ jobs:
  
     - name: Modify file
       run: |
-        echo ${{ steps.get-latest-tag.outputs.tag }}
+        # Use sed to replace the tag in the file with the ARTIFACT_NAME
+        sed -i "s/tag:.*/tag: ${{ steps.release.outputs.tag_name }}/g" values-prod.yaml
+        
+    - name: Construct New Branch Name
+      run: echo "BRANCH_NAME=${{ steps.get-latest-tag.outputs.tag }}-release-to-prod-auto-image-tag-update" >> "$GITHUB_OUTPUT"
+      id: branch-name
+      
+    - name: Check for changes
+      run: |
+        cat values-prod.yaml
+        git status
+    - name: Stage updated values-prod.yaml
+      run: git add .
+      
+    - name: Commit changes
+      run: git commit -m "Auto-updating values-prod.yaml with new build tag ${{ steps.release.outputs.tag_name }}"
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        branch: ${{ steps.branch-name.outputs.BRANCH_NAME }}
+        commit-message: "Auto-updating values-dev.yaml with new build tag ${{ steps.release.outputs.tag_name }} and merging (please add issue ID to merge commit message)"
+      id: cpr
