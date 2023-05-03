@@ -18,7 +18,10 @@ jobs:
 
     steps:
     - name: Update git user
-      run: git config --global user.name "${{ github.event.pusher.name }}"
+      run: |
+        export REPO_DISP=${{ github.event.repository_dispatch.sender }}
+        export WF_DISP=${{ github.event.workflow_dispatch.sender }}
+        git config --global user.name "${REPO_DISP:-${WF_DISP:-default}}"
     
     - name: checkout code
       uses: actions/checkout@v3
