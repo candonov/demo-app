@@ -81,7 +81,7 @@ jobs:
       uses: atlassian/gajira-comment@v3
       with:
         issue: ${{ steps.find-issue-main.outputs.issue }}
-        comment: ${{ github.event.pusher.name }} new version ${{ steps.release.outputs.tag_name }} built and pushed to registry
+        comment: ${{ github.event.pusher.name }} version ${{ steps.release.outputs.tag_name }} built and pushed to registry
  
     - name: Modify file
       run: |
@@ -122,5 +122,5 @@ jobs:
       uses: atlassian/gajira-comment@v3
       with:
         issue: ${{ steps.find-issue-main.outputs.issue }}
-        comment: ${{ github.event.pusher.name }} PR automatically merged to update values-dev.yml
+        comment: ${{ github.event.pusher.name }} deployed version ${{ steps.release.outputs.tag_name }} to dev
         
