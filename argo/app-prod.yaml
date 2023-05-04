@@ -8,12 +8,15 @@ spec:
     namespace: prod 
     server: 'https://kubernetes.default.svc'
   sources:
-    - repoURL: 'https://github.com/candonov/helm-charts.git'
-      targetRevision: HEAD
-      path: demo-app/
+    - chart: helm-demo-app-chart
+      repoURL: 352858358668.dkr.ecr.us-east-1.amazonaws.com
+      targetRevision: 0.1.1
       helm:
         valueFiles:
           - $values/values-prod.yaml
+        parameters:
+          - name: image.repo
+            value: $ARGOCD_APP_SOURCE_REPO_URL
     - repoURL: 'https://github.com/candonov/demo-app.git'
       targetRevision: HEAD
       ref: values
