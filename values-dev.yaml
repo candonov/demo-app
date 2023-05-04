@@ -1,6 +1,6 @@
 image:
   name: demo-app
-  tag: v0.0.11
+  tag: v0.0.12
 ingress:
   enabled: true
   domain: demoawsblueprints
