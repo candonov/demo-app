@@ -46,7 +46,7 @@ jobs:
       uses: atlassian/gajira-comment@v3
       with:
         issue: ${{ steps.find-issue.outputs.issue }}
-        comment: ${{ github.event.pusher.name }} deployed version ${{ steps.release.outputs.tag_name }} to prod
+        comment: ${{ github.event.pusher.name }} deployed version ${{ steps.get-latest-tag.outputs.tag }} to prod
         
     - name: Transition issue to Done
       id: transition
